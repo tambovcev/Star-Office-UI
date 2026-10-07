@@ -3977,6 +3977,7 @@ function toggleBrokerPanel() {
             // cache-busting to avoid stale background on client/CDN
             // use smaller/new map version provided by user
             this.load.image('office_bg', '/static/office_bg_small.webp?v={{VERSION_TIMESTAMP}}');
+            this.load.image('atg_it_agent_idle', '/static/atg-it-agent-idle.png?v={{VERSION_TIMESTAMP}}');
             this.load.spritesheet('star_idle', '/static/star-idle-v5.png?v={{VERSION_TIMESTAMP}}', { frameWidth: 256, frameHeight: 256 });
 
             // Furniture
@@ -4031,6 +4032,12 @@ function toggleBrokerPanel() {
             window.atgLegacyObjects = [];
             hideGameSkeleton();
             officeBgSprite = this.add.image(640, 360, 'office_bg');
+
+            // ATG IT / 1C agent — first native ATG character.
+            const atgItAgent = this.add.image(1115, 435, 'atg_it_agent_idle').setOrigin(0.5, 1);
+            atgItAgent.setScale(0.48);
+            atgItAgent.setDepth(30);
+            window.atgItAgent = atgItAgent;
 
             // Place furniture: Sofa
             // NOTE: coordinates are interpreted as the TOP-LEFT corner of the sprite
