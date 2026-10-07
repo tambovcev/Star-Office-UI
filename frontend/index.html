@@ -1725,6 +1725,12 @@
 
         // 状态控制栏函数（用于测试）
         function setState(state, detail) {
+            // Move the ATG agent immediately on a manual state change.
+            // /status polling will then confirm the same state from the backend.
+            if (ATG_MODE && window.atgItAgent && typeof moveAtgItAgent === 'function') {
+                moveAtgItAgent(normalizeState(state));
+            }
+
             fetch('/set_state', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
