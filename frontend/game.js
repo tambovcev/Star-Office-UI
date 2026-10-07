@@ -324,6 +324,7 @@ function preload() {
 
 function create() {
   game = this;
+  const ATG_MODE = true; // ATG scene: background already contains furniture/decor
   this.add.image(640, 360, 'office_bg');
 
   // === 沙发（来自 LAYOUT）===
@@ -333,6 +334,7 @@ function create() {
     'sofa_busy'
   ).setOrigin(LAYOUT.furniture.sofa.origin.x, LAYOUT.furniture.sofa.origin.y);
   sofa.setDepth(LAYOUT.furniture.sofa.depth);
+  sofa.setVisible(!ATG_MODE);
 
   this.anims.create({
     key: 'sofa_busy',
@@ -374,7 +376,7 @@ function create() {
   const plaqueY = LAYOUT.plaque.y;
   const plaqueBg = game.add.rectangle(plaqueX, plaqueY, LAYOUT.plaque.width, LAYOUT.plaque.height, 0x5d4037);
   plaqueBg.setStrokeStyle(3, 0x3e2723);
-  const plaqueText = game.add.text(plaqueX, plaqueY, '海辛小龙虾的办公室', {
+  const plaqueText = game.add.text(plaqueX, plaqueY, 'ATG Office', {
     fontFamily: 'ArkPixel, monospace',
     fontSize: '18px',
     fill: '#ffd700',
@@ -382,8 +384,12 @@ function create() {
     stroke: '#000',
     strokeThickness: 2
   }).setOrigin(0.5);
-  game.add.text(plaqueX - 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
-  game.add.text(plaqueX + 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
+  const plaqueStarLeft = game.add.text(plaqueX - 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
+  const plaqueStarRight = game.add.text(plaqueX + 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
+  plaqueBg.setVisible(!ATG_MODE);
+  plaqueText.setVisible(!ATG_MODE);
+  plaqueStarLeft.setVisible(!ATG_MODE);
+  plaqueStarRight.setVisible(!ATG_MODE);
 
   // === 植物们（来自 LAYOUT）===
   const plantFrameCount = 16;
@@ -392,6 +398,7 @@ function create() {
     const randomPlantFrame = Math.floor(Math.random() * plantFrameCount);
     const plant = game.add.sprite(p.x, p.y, 'plants', randomPlantFrame).setOrigin(0.5);
     plant.setDepth(p.depth);
+    plant.setVisible(!ATG_MODE);
     plant.setInteractive({ useHandCursor: true });
     window[`plantSprite${i === 0 ? '' : i + 1}`] = plant;
     plant.on('pointerdown', (() => {
@@ -405,6 +412,7 @@ function create() {
   const randomPosterFrame = Math.floor(Math.random() * postersFrameCount);
   const poster = game.add.sprite(LAYOUT.furniture.poster.x, LAYOUT.furniture.poster.y, 'posters', randomPosterFrame).setOrigin(0.5);
   poster.setDepth(LAYOUT.furniture.poster.depth);
+  poster.setVisible(!ATG_MODE);
   poster.setInteractive({ useHandCursor: true });
   window.posterSprite = poster;
   window.posterFrameCount = postersFrameCount;
@@ -418,6 +426,7 @@ function create() {
   const randomCatFrame = Math.floor(Math.random() * catsFrameCount);
   const cat = game.add.sprite(LAYOUT.furniture.cat.x, LAYOUT.furniture.cat.y, 'cats', randomCatFrame).setOrigin(LAYOUT.furniture.cat.origin.x, LAYOUT.furniture.cat.origin.y);
   cat.setDepth(LAYOUT.furniture.cat.depth);
+  cat.setVisible(!ATG_MODE);
   cat.setInteractive({ useHandCursor: true });
   window.catSprite = cat;
   window.catsFrameCount = catsFrameCount;
@@ -439,6 +448,7 @@ function create() {
     'coffee_machine'
   ).setOrigin(LAYOUT.furniture.coffeeMachine.origin.x, LAYOUT.furniture.coffeeMachine.origin.y);
   coffeeMachine.setDepth(LAYOUT.furniture.coffeeMachine.depth);
+  coffeeMachine.setVisible(!ATG_MODE);
   coffeeMachine.anims.play('coffee_machine', true);
 
   // === 服务器区（来自 LAYOUT）===
@@ -455,6 +465,7 @@ function create() {
     0
   ).setOrigin(LAYOUT.furniture.serverroom.origin.x, LAYOUT.furniture.serverroom.origin.y);
   serverroom.setDepth(LAYOUT.furniture.serverroom.depth);
+  serverroom.setVisible(!ATG_MODE);
   serverroom.anims.stop();
   serverroom.setFrame(0);
 
@@ -465,6 +476,7 @@ function create() {
     'desk_v2'
   ).setOrigin(LAYOUT.furniture.desk.origin.x, LAYOUT.furniture.desk.origin.y);
   desk.setDepth(LAYOUT.furniture.desk.depth);
+  desk.setVisible(!ATG_MODE);
 
   // === 花盆（来自 LAYOUT）===
   const flowerFrameCount = 16;
@@ -477,6 +489,7 @@ function create() {
   ).setOrigin(LAYOUT.furniture.flower.origin.x, LAYOUT.furniture.flower.origin.y);
   flower.setScale(LAYOUT.furniture.flower.scale || 1);
   flower.setDepth(LAYOUT.furniture.flower.depth);
+  flower.setVisible(!ATG_MODE);
   flower.setInteractive({ useHandCursor: true });
   window.flowerSprite = flower;
   window.flowerFrameCount = flowerFrameCount;
@@ -507,7 +520,7 @@ function create() {
     0
   ).setOrigin(LAYOUT.furniture.errorBug.origin.x, LAYOUT.furniture.errorBug.origin.y);
   errorBug.setDepth(LAYOUT.furniture.errorBug.depth);
-  errorBug.setVisible(false);
+  errorBug.setVisible(false); // remains hidden in ATG mode until replaced by ATG alert asset
   errorBug.setScale(LAYOUT.furniture.errorBug.scale);
   errorBug.anims.play('error_bug', true);
   window.errorBug = errorBug;
