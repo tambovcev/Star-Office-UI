@@ -4620,27 +4620,37 @@ function toggleBrokerPanel() {
         }
 
         const ATG_IT_AGENT_POSITIONS = {
-            idle:    { x: 1095, y: 465 },
-            writing: { x: 1050, y: 478 },
-            researching: { x: 1050, y: 478 },
-            syncing: { x: 1225, y: 455 },
-            error:   { x: 1165, y: 475 }
+            idle:        { x: 1095, y: 465 },
+            writing:     { x: 1015, y: 500 },
+            researching: { x: 1015, y: 500 },
+            syncing:     { x: 1215, y: 500 },
+            error:       { x: 1135, y: 535 }
         };
 
         function moveAtgItAgent(nextState) {
             if (!ATG_MODE || !window.atgItAgent) return;
+
+            nextState = normalizeState(nextState);
             const target = ATG_IT_AGENT_POSITIONS[nextState] || ATG_IT_AGENT_POSITIONS.writing;
             const agent = window.atgItAgent;
             agent.setVisible(true);
             agent.setDepth(30);
+
+            // /status is polled every second. Do not restart the same tween on every poll.
+            if (agent.__atgTargetState === nextState) return;
+            agent.__atgTargetState = nextState;
+
             if (agent.scene && agent.scene.tweens) {
                 agent.scene.tweens.killTweensOf(agent);
                 agent.scene.tweens.add({
                     targets: agent,
                     x: target.x,
                     y: target.y,
-                    duration: 900,
-                    ease: 'Sine.easeInOut'
+                    duration: 1400,
+                    ease: 'Sine.easeInOut',
+                    onComplete: () => {
+                        agent.setPosition(target.x, target.y);
+                    }
                 });
             } else {
                 agent.setPosition(target.x, target.y);
