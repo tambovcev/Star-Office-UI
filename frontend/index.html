@@ -4613,7 +4613,36 @@ function toggleBrokerPanel() {
             return s;
         }
 
+        const ATG_IT_AGENT_POSITIONS = {
+            idle:    { x: 1095, y: 465 },
+            writing: { x: 1050, y: 478 },
+            researching: { x: 1050, y: 478 },
+            syncing: { x: 1225, y: 455 },
+            error:   { x: 1165, y: 475 }
+        };
+
+        function moveAtgItAgent(nextState) {
+            if (!ATG_MODE || !window.atgItAgent) return;
+            const target = ATG_IT_AGENT_POSITIONS[nextState] || ATG_IT_AGENT_POSITIONS.writing;
+            const agent = window.atgItAgent;
+            agent.setVisible(true);
+            agent.setDepth(30);
+            if (agent.scene && agent.scene.tweens) {
+                agent.scene.tweens.killTweensOf(agent);
+                agent.scene.tweens.add({
+                    targets: agent,
+                    x: target.x,
+                    y: target.y,
+                    duration: 900,
+                    ease: 'Sine.easeInOut'
+                });
+            } else {
+                agent.setPosition(target.x, target.y);
+            }
+        }
+
         function applyVisualState(nextState) {
+            moveAtgItAgent(nextState);
             // Idle: show Star idle animation (main character)
             if (nextState === 'idle') {
                 sofa.anims.stop();
