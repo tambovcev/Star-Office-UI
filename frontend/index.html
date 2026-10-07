@@ -4083,7 +4083,7 @@ function toggleBrokerPanel() {
             star.setAlpha(0.95);
             star.setDepth(20); // Put Star on top of everything
             // Default: idle shows Star idle animation
-            star.setVisible(true);
+            star.setVisible(!ATG_MODE);
             star.anims.play('star_idle', true);
 
             // Sofa stays static when idle (no longer the main idle animation)
@@ -4528,7 +4528,7 @@ function toggleBrokerPanel() {
             // error 状态：显示 bug 动画，并在两点之间来回移动
             if (window.errorBug) {
                 if (effectiveStateForServer === 'error') {
-                    window.errorBug.setVisible(true);
+                    window.errorBug.setVisible(!ATG_MODE);
                     if (!window.errorBug.anims.isPlaying || window.errorBug.anims.currentAnim?.key !== 'error_bug') {
                         window.errorBug.anims.play('error_bug', true);
                     }
@@ -4624,7 +4624,7 @@ function toggleBrokerPanel() {
                     window.starWorking.anims.stop();
                 }
 
-                star.setVisible(true);
+                star.setVisible(!ATG_MODE);
                 star.setScale(IDLE_STAR_SCALE);
                 star.anims.play('star_idle', true);
                 star.setPosition(IDLE_SOFA_ANCHOR.x, IDLE_SOFA_ANCHOR.y);
@@ -4656,7 +4656,7 @@ function toggleBrokerPanel() {
                 star.setVisible(false);
                 star.anims.stop();
                 if (window.starWorking) {
-                    window.starWorking.setVisible(true);
+                    window.starWorking.setVisible(!ATG_MODE);
                     window.starWorking.anims.play('star_working', true);
                 }
             }
@@ -4785,7 +4785,7 @@ function toggleBrokerPanel() {
                                     window.starWorking.setVisible(false);
                                     window.starWorking.anims.stop();
                                 }
-                                star.setVisible(true);
+                                star.setVisible(!ATG_MODE);
                                 star.setScale(IDLE_STAR_SCALE);
                                 star.anims.play('star_idle', true);
                                 star.setPosition(IDLE_SOFA_ANCHOR.x, IDLE_SOFA_ANCHOR.y);
@@ -4796,7 +4796,7 @@ function toggleBrokerPanel() {
                                 star.setVisible(false);
                                 star.anims.stop();
                                 if (window.starWorking) {
-                                    window.starWorking.setVisible(true);
+                                    window.starWorking.setVisible(!ATG_MODE);
                                     window.starWorking.anims.play('star_working', true);
                                 }
                             }
@@ -4813,7 +4813,7 @@ function toggleBrokerPanel() {
                                 window.starWorking.setVisible(false);
                                 window.starWorking.anims.stop();
                             }
-                            star.setVisible(true);
+                            star.setVisible(!ATG_MODE);
                             star.setScale(IDLE_STAR_SCALE);
                             star.anims.play('star_idle', true);
                             star.setPosition(IDLE_SOFA_ANCHOR.x, IDLE_SOFA_ANCHOR.y);
@@ -4824,7 +4824,7 @@ function toggleBrokerPanel() {
                             star.setVisible(false);
                             star.anims.stop();
                             if (window.starWorking) {
-                                window.starWorking.setVisible(true);
+                                window.starWorking.setVisible(!ATG_MODE);
                                 window.starWorking.anims.play('star_working', true);
                             }
                             sofa.anims.stop();
@@ -4840,7 +4840,7 @@ function toggleBrokerPanel() {
             if (!isMoving && currentState !== 'idle' && pendingDesiredState === null && (time - lastWanderAt) > 3500) {
                 targetX = baseTarget.x + (Math.random() - 0.5) * 60;
                 targetY = baseTarget.y + (Math.random() - 0.5) * 40;
-                star.setVisible(true);
+                star.setVisible(!ATG_MODE);
                 star.anims.play('star_idle', true);
                 isMoving = true;
                 lastWanderAt = time;
