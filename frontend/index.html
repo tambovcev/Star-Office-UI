@@ -4027,6 +4027,8 @@ function toggleBrokerPanel() {
 
         function create() {
             game = this;
+            const ATG_MODE = true;
+            window.atgLegacyObjects = [];
             hideGameSkeleton();
             officeBgSprite = this.add.image(640, 360, 'office_bg');
 
@@ -4036,6 +4038,7 @@ function toggleBrokerPanel() {
             sofaShadow.setDepth(9);
             sofa = this.add.sprite(IDLE_SOFA_ANCHOR.x, IDLE_SOFA_ANCHOR.y, 'sofa_idle').setOrigin(0.5);
             sofa.setDepth(10);
+            window.atgLegacyObjects.push(sofaShadow, sofa);
             areas = {
                 door: { x: 640, y: 550 }, // 墙的门（偏下 1/3 位置）
                 writing: { x: 320, y: 360 }, // 左 1/3 中间（办公桌）
@@ -4100,6 +4103,7 @@ function toggleBrokerPanel() {
             game.add.text(plaqueX - 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
             game.add.text(plaqueX + 190, plaqueY, '⭐', { fontFamily: 'ArkPixel, monospace', fontSize: '20px' }).setOrigin(0.5);
             window.officePlaqueText = plaqueText;
+            window.atgLegacyObjects.push(plaqueBg, plaqueText);
 
             // Random plant at (565,178) (frame 0-15, 160x160 each)
             const plantFrameCount = 16;
@@ -4109,6 +4113,7 @@ function toggleBrokerPanel() {
             plant.setInteractive({ useHandCursor: true });
             // Expose to global for click handler
             window.plantSprite = plant;
+            window.atgLegacyObjects.push(plant);
             window.plantFrameCount = plantFrameCount;
             
             plant.on('pointerdown', () => {
@@ -4123,6 +4128,7 @@ function toggleBrokerPanel() {
             plant2.setInteractive({ useHandCursor: true });
             // Expose to global for click handler
             window.plantSprite2 = plant2;
+            window.atgLegacyObjects.push(plant2);
             
             plant2.on('pointerdown', () => {
                 const next = Math.floor(Math.random() * window.plantFrameCount);
@@ -4136,6 +4142,7 @@ function toggleBrokerPanel() {
             plant3.setInteractive({ useHandCursor: true });
             // Expose to global for click handler
             window.plantSprite3 = plant3;
+            window.atgLegacyObjects.push(plant3);
             
             plant3.on('pointerdown', () => {
                 const next = Math.floor(Math.random() * window.plantFrameCount);
@@ -4150,6 +4157,7 @@ function toggleBrokerPanel() {
             poster.setInteractive({ useHandCursor: true });
             // Expose to global for click handler
             window.posterSprite = poster;
+            window.atgLegacyObjects.push(poster);
             window.posterFrameCount = postersFrameCount;
             
             poster.on('pointerdown', () => {
@@ -4165,6 +4173,7 @@ function toggleBrokerPanel() {
             cat.setInteractive({ useHandCursor: true });
             // Expose to global for click handler
             window.catSprite = cat;
+            window.atgLegacyObjects.push(cat);
             window.catsFrameCount = catsFrameCount;
             cat.on('pointerdown', () => {
                 const next = Math.floor(Math.random() * window.catsFrameCount);
@@ -4187,6 +4196,7 @@ function toggleBrokerPanel() {
             const coffeeMachine = this.add.sprite(659, 397, 'coffee_machine').setOrigin(0.5);
             coffeeMachine.setDepth(99);
             coffeeMachine.anims.play('coffee_machine', true);
+            window.atgLegacyObjects.push(coffeeMachineShadow, coffeeMachine);
 
             // Server room animation
             const serverFrameMax = Math.max(0, (this.textures.get('serverroom')?.frameTotal || 1) - 2);
@@ -4201,10 +4211,12 @@ function toggleBrokerPanel() {
             // 默认 idle: 静止第0帧
             serverroom.anims.stop();
             serverroom.setFrame(0);
+            window.atgLegacyObjects.push(serverroom);
 
             // Desk at (218,417) (v2)
             const desk = this.add.image(218, 417, 'desk_v2').setOrigin(0.5);
             desk.setDepth(1001);  // desk above starWorking
+            window.atgLegacyObjects.push(desk);
 
             // Random flower pot at (310,390), default scale 0.8 (top layer)
             const flowerFrameCount = Math.max(1, FLOWERS_FRAME_COLS * FLOWERS_FRAME_ROWS); // 动态帧数
@@ -4214,6 +4226,7 @@ function toggleBrokerPanel() {
             flower.setDepth(1100); // highest among desk/starWorking
             flower.setInteractive({ useHandCursor: true });
             window.flowerSprite = flower;
+            window.atgLegacyObjects.push(flower);
             window.flowerFrameCount = flowerFrameCount;
             flower.on('pointerdown', () => {
                 const next = Math.floor(Math.random() * window.flowerFrameCount);
@@ -4251,6 +4264,7 @@ function toggleBrokerPanel() {
             starWorking.setDepth(900);  // starWorking under desk so desk partially covers it
             // Store reference to starWorking for state logic
             window.starWorking = starWorking;
+            window.atgLegacyObjects.push(star, errorBug, starWorking);
 
             // Sync animation sprite at (1157,592)
             const syncFrameTotal = Number(this.textures.get('sync_anim')?.frameTotal || 0);
@@ -4274,6 +4288,11 @@ function toggleBrokerPanel() {
             // default show first frame only
             syncAnimSprite.anims.stop();
             syncAnimSprite.setFrame(0);
+            window.atgLegacyObjects.push(syncAnimSprite);
+
+            if (ATG_MODE) {
+                window.atgLegacyObjects.forEach(obj => obj && obj.setVisible(false));
+            }
 
             // Debug: expose star sprite too (for path calibration / visuals)
             window.starSprite = star;
